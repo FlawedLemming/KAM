@@ -41,6 +41,8 @@
 #define GETGVAR(var1,var2) GETMVAR(GVAR(var1),var2)
 #define GETEGVAR(var1,var2,var3) GETMVAR(EGVAR(var1,var2),var3)
 
+#define QGETGVAR(var1,var2) QUOTE(GETMVAR(QGVAR(var1),var2))
+
 #define ARR_SELECT(ARRAY,INDEX,DEFAULT) (if (count ARRAY > INDEX) then {ARRAY select INDEX} else {DEFAULT})
 #define ANY_OF(ARRAY,CONDITION) (ARRAY findIf {CONDITION} != -1)
 
@@ -186,13 +188,13 @@
 #undef GET_SM_STATE
 #define GET_SM_STATE(_unit)         ([_unit, ACEGVAR(medical,STATE_MACHINE)] call CBA_statemachine_fnc_getCurrentState)
 
-#undef GET_BLOOD_VOLUME             
+#undef GET_BLOOD_VOLUME
 
-#define GET_OPIOID_FACTOR(unit)           (unit getVariable [QEGVAR(pharma,opioidFactor), 1])
+#define GET_OPIOID_FACTOR(unit)           (unit getVariable [QEGVAR(pharma,opioidFactor), 0])
 #define GET_PAIN_PERCEIVED(unit)    (0 max ((GET_PAIN(unit) - GET_PAIN_SUPPRESS(unit)) min 1))
 
 #undef GET_DAMAGE_THRESHOLD
-#define GET_DAMAGE_THRESHOLD(unit)  ((unit getVariable [QACEGVAR(medical,damageThreshold), [ACEGVAR(medical,AIDamageThreshold),ACEGVAR(medical,playerDamageThreshold)] select (isPlayer unit)]) * GET_OPIOID_FACTOR(unit))
+#define GET_DAMAGE_THRESHOLD(unit)  ((unit getVariable [QACEGVAR(medical,damageThreshold), [ACEGVAR(medical,AIDamageThreshold),ACEGVAR(medical,playerDamageThreshold)] select (isPlayer unit)]) * (GET_OPIOID_FACTOR(unit) + 1))
 
 #define DEFAULT_TOURNIQUET_VALUES   [0,0,0,0,0,0]
 #define GET_TOURNIQUETS(unit)       (unit getVariable [VAR_TOURNIQUET, DEFAULT_TOURNIQUET_VALUES])
@@ -280,6 +282,7 @@
 #define DEFAULT_PH 7.4
 #define DEFAULT_ETCO2 37
 #define DEFAULT_BLOOD_GAS [DEFAULT_PACO2, DEFAULT_PAO2, DEFAULT_O2SAT, DEFAULT_HCO3, DEFAULT_PH, DEFAULT_ETCO2]
+#define DEFAULT_RESPIRATORY_DEPTH       10
 
 #define DEFAULT_ANEROBIC_EXCHANGE 0.8
 #define DEFAULT_TEMPERATURE 37
@@ -302,12 +305,15 @@
 #define VAR_SURFACE_AREA                400
 #define GET_KAT_SURFACE_AREA(unit)      (VAR_SURFACE_AREA - (((unit getVariable [QEGVAR(breathing,pneumothorax), 0]) * 75)))
 
+#define VAR_RESPIRATORY_DEPTH           QEGVAR(vitals,respiratoryDepth)
+#define GET_KAT_RESPIRATORY_DEPTH(unit)      (unit getVariable [QEGVAR(vitals,respiratoryDepth), 10])
+
 #define VAR_BLOOD_GAS                  QEGVAR(circulation,bloodGas)
 #define VAR_BREATHING_RATE             QEGVAR(breathing,breathRate)
 
 #define GET_BLOOD_GAS(unit)            (unit getVariable [VAR_BLOOD_GAS, DEFAULT_BLOOD_GAS])
 #define GET_PAO2(unit)                 ((unit getVariable [VAR_BLOOD_GAS, DEFAULT_BLOOD_GAS]) select 1)
-#define GET_SPO2(unit)                 (((unit getVariable [VAR_BLOOD_GAS, DEFAULT_BLOOD_GAS]) select 2) * 100)
+#define GET_KAT_SPO2(unit)             (((unit getVariable [VAR_BLOOD_GAS, DEFAULT_BLOOD_GAS]) select 2) * 100)
 #define GET_PH(unit)                   ((unit getVariable [VAR_BLOOD_GAS, DEFAULT_BLOOD_GAS]) select 4)
 #define GET_ETCO2(unit)                ((unit getVariable [VAR_BLOOD_GAS, DEFAULT_BLOOD_GAS]) select 5)
 #define GET_BREATHING_RATE(unit)       (unit getVariable [VAR_BREATHING_RATE, 15])
@@ -336,3 +342,15 @@
 
 //Surgery
 #define STRING_BODY_PARTS ["head", "body", "left arm", "right arm", "left leg", "right leg"]
+#define GET_REBOA_VOLUME(unit)         ([unit] call EFUNC(surgery,reboaVolume))
+
+//Feedback
+#define VAR_PP QEGVAR(feedback,ppEffect)
+#define GET_PP(unit) (unit getVariable [VAR_PP, 0])
+
+#define IS_AIRPOISONED(unit) (unit getVariable [QEGVAR(chemical,airPoisoning), false])
+#define IN_TEARGAS(unit) (unit getVariable [QEGVAR(chemical,CSGas), 0])
+
+//Ophthalmology
+#define GET_DUST_INJURY(unit) ((unit getVariable [QEGVAR(ophthalmology,dustInjuryLight), 0]) + (unit getVariable [QEGVAR(ophthalmology,dustInjuryHeavy), 0]))
+#define GET_EYE_INJURIES(unit) (unit getVariable [QEGVAR(ophthalmology,eyeInjuries), [1,1]])

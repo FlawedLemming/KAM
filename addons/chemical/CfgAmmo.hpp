@@ -1,37 +1,35 @@
-class CfgAmmo
-{
+class CfgAmmo {
+
     class SmokeShellArty;
-    class KAT_SmokeShellArty: SmokeShellArty{
+    class KAT_SmokeShellArty: SmokeShellArty {
         smokeColor[] = {0,0,0,0};
     };
 
     class Smoke_82mm_AMOS_White;
-    class Sh_82mm_AMOS_Type0: Smoke_82mm_AMOS_White
-    {
+    class Sh_82mm_AMOS_Type0: Smoke_82mm_AMOS_White {
         KAT_projectile = 1;
         KAT_lifetime = 90;
         KAT_radius = 10;
-        KAT_toxicLvL = 0;
+        KAT_toxicLvL = 1;
         soundFakeFall[] = {"soundFakeFall0",0.25,"soundFakeFall1",0.25,"soundFakeFall2",0.25,"soundFakeFall3",0.25};
-        soundFakeFall0[] = {"a3\Sounds_F\weapons\falling_bomb\fall_01",3.16228,1,1000};
-        soundFakeFall1[] = {"a3\Sounds_F\weapons\falling_bomb\fall_02",3.16228,1,1000};
-        soundFakeFall2[] = {"a3\Sounds_F\weapons\falling_bomb\fall_03",3.16228,1,1000};
-        soundFakeFall3[] = {"a3\Sounds_F\weapons\falling_bomb\fall_04",3.16228,1,1000};
+        soundFakeFall0[] = {"a3\Sounds_F\weapons\falling_bomb\fall_01.wss",3.16228,1,1000};
+        soundFakeFall1[] = {"a3\Sounds_F\weapons\falling_bomb\fall_02.wss",3.16228,1,1000};
+        soundFakeFall2[] = {"a3\Sounds_F\weapons\falling_bomb\fall_03.wss",3.16228,1,1000};
+        soundFakeFall3[] = {"a3\Sounds_F\weapons\falling_bomb\fall_04.wss",3.16228,1,1000};
         whistleDist = 20;
         whistleOnFire = 2;
         submunitionAmmo = "KAT_SmokeShellArty";
     };
-    class Sh_82mm_AMOS_TypeCS: Sh_82mm_AMOS_Type0
-    {
+
+    class Sh_82mm_AMOS_TypeCS: Sh_82mm_AMOS_Type0 {
         KAT_projectile = 1;
         KAT_lifetime = 60;
         KAT_radius = 10;
-        KAT_toxicLvL = 1; //cs
+        KAT_toxicLvL = 0; //cs
     };
 
     class SmokeShell;
-    class KAT_G_M7A3: SmokeShell
-    {
+    class KAT_G_M7A3: SmokeShell {
         KAT_csGas = 1;
         model = QPATHTOF(ui\m7a3_throw.p3d);
         dangerRadiusHit = -1;
@@ -57,8 +55,8 @@ class CfgAmmo
         hit = 0;
         indirectHit = 0;
         indirectHitRange = 0;
-        soundHit[] = {"A3\Sounds_F\weapons\smokeshell\smoke_3",1.25893,1,100};
-        explosionEffects = "KAT_GASTripEffect";
+        soundHit[] = {"A3\Sounds_F\weapons\smokeshell\smoke_3.wss",1.25893,1,100};
+        explosionEffects = "KAT_TripWireGasEffect";
         CraterEffects = "";
         soundTrigger[] = {"",1,1};
         class CamShakeExplode {
@@ -79,7 +77,7 @@ class CfgAmmo
     //class Bo_GBU12_LGB;
     class BombCluster_01_Ammo_F;
     class KAT_CAS_M43_Ammo: BombCluster_01_Ammo_F {
-        aiAmmoUsageFlags = "64 + 128 + 512";
+        aiAmmoUsageFlags = 64 + 128 + 512;
         allowAgainstInfantry = 1;
         autoSeekTarget = 1;
         canLock=1;
@@ -102,22 +100,20 @@ class CfgAmmo
         model = "\A3\Weapons_F\Ammo\Bomb_01_fly_F";
         nvLock = 1;
         simulation = "shotMissile";
-        soundFly[] = {"A3\Sounds_F\arsenal\weapons\Launchers\RPG32\Fly_RPG32",1,1,500};
+        soundFly[] = {"A3\Sounds_F\arsenal\weapons\launchers\RPG32\Fly_RPG32.wss",1,1,500};
         weaponLockSystem = 4;
         weaponType = "Default";
         triggerDistance = 250;
         triggerSpeedCoef[] = {0.8,1};
         submunitionAmmo="KAT_CAS_M43_Ammo_sub";
-        class CamShakeExplode
-        {
+        class CamShakeExplode {
             power = 20;
             duration = 2;
             frequency = 5;
             distance = 250;
         };
-
-
     };
+
     class Mo_cluster_Bomb_01_F;
     class KAT_CAS_M43_Ammo_sub: Mo_cluster_Bomb_01_F {
         hit = 0;

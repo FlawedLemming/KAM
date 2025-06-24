@@ -29,7 +29,8 @@ private _fnc_getActions = {
         _idNumber = getNumber (_config >> "nameID");
 
         if (_idNumber > 0) then {   
-            private _bloodSampleArray = GVAR(bloodSampleMap) get _idNumber;
+            private _bloodSampleArray = missionNamespace getVariable [QEGVAR(circulation,bloodSampleMap), []];
+            _bloodSampleArray = _bloodSampleArray get _idNumber;
             private _patient = _bloodSampleArray select 0;
 
             _actions pushBack [
@@ -37,7 +38,7 @@ private _fnc_getActions = {
                     _x,
                     format [LLSTRING(Blood_Sample_String), _patient],
                     "",
-                    {_this call FUNC(showBloodGas)},
+                    {call FUNC(showBloodGas)},
                     {true},
                     {},
                     [],

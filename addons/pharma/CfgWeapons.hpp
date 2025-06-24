@@ -168,7 +168,7 @@ class CfgWeapons {
             mass = 0.5;
         };
     };
-        class kat_lorazepam: ACE_ItemCore {
+    class kat_lorazepam: ACE_ItemCore {
         scope = 2;
         displayName = CSTRING(Lorazepam_displayName);
         picture = QPATHTOF(ui\icon_lorazepam.paa);
@@ -217,10 +217,10 @@ class CfgWeapons {
         author = "Miss Heda";
         displayName = CSTRING(Coag_Sense_Display);
         picture = QPATHTOF(ui\icon_Coag_Sense.paa);
-        descriptionShort = CSTRING(Coag_Sense_DescShort);
+        descriptionShort = CSTRING(Coag_Sense_Display_DESC);
         ACE_isMedicalItem = 1;
         class ItemInfo: CBA_MiscItem_ItemInfo {
             mass = 1;
-        }; 
+        };
     };
 };

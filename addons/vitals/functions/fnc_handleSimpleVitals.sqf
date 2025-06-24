@@ -39,7 +39,7 @@ private _bloodVolume = _bloodVolume - (_woundBloodLoss / 100);
 _unit setVariable [VAR_BLOOD_VOL, _bloodVolume, _syncValues];
 
 private _inPain = GET_PAIN_PERCEIVED(_unit) > 0;
-if !(_inPain isEqualTo IS_IN_PAIN(_unit)) then {
+if (_inPain isNotEqualTo IS_IN_PAIN(_unit)) then {
     _unit setVariable [VAR_IN_PAIN, _inPain, true];
 };
 
@@ -48,7 +48,7 @@ private _hrTargetAdjustment = 0;
 private _painSupressAdjustment = 0;
 private _adjustments = _unit getVariable [VAR_MEDICATIONS,[]];
 
-if !(_adjustments isEqualTo []) then {
+if (_adjustments isNotEqualTo []) then {
     private _deleted = false;
     {
         _x params ["_medication", "_timeAdded", "_timeTillMaxEffect", "_maxTimeInSystem", "_hrAdjust", "_painAdjust", "_flowAdjust", "_alphaFactor"];
@@ -71,13 +71,10 @@ if !(_adjustments isEqualTo []) then {
 
 private _heartRate = [_unit, _hrTargetAdjustment, _deltaT, _syncValues] call ACEFUNC(medical_vitals,updateHeartRate); //Rename
 [_unit, _painSupressAdjustment, _deltaT, _syncValues] call ACEFUNC(medical_vitals,updatePainSuppress); //Leave alone
+[_unit, POISON_DECREASE, _deltaT, _syncValues] call FUNC(handlePoisoning);
 
-// Remeber to change getBloodPressure macro ----------------------------------------------------------
-
-private _bloodPressure = [120,80];
+private _bloodPressure = [80,120];
 _unit setVariable [VAR_BLOOD_PRESS, _bloodPressure, _syncValues];
-
-_bloodPressure params ["_bloodPressureL", "_bloodPressureH"];
 
 // Statements are ordered by most lethal first.
 switch (true) do {
@@ -118,5 +115,8 @@ if (!isPlayer _unit) then {
 #endif
 
 END_COUNTER(Vitals);
+
+//placed outside the counter as 3rd-party code may be called from this event
+[QACEGVAR(medical,handleUnitVitals), [_unit, _deltaT]] call CBA_fnc_localEvent;
 
 true

@@ -1,5 +1,5 @@
 #define COMPONENT misc
-#define COMPONENT_BEAUTIFIED KAT - MISC
+#define COMPONENT_BEAUTIFIED MISC
 #include "\x\kat\addons\main\script_mod.hpp"
 
 // #define DEBUG_MODE_FULL
@@ -20,3 +20,9 @@
 
 #define DAMAGED_MIN_THRESHOLD 0.45
 #define LIMPING_MIN_DAMAGE 0.5
+
+// Animations that would be played slower than this are instead played exactly as slow as this. (= Progress bar will take longer than the slowed down animation).
+#define ANIMATION_SPEED_MIN_COEFFICIENT 0.5
+
+// Animations that would be played faster than this are instead skipped. (= Progress bar too quick for animation).
+#define ANIMATION_SPEED_MAX_COEFFICIENT 2.5

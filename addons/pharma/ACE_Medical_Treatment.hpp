@@ -16,6 +16,8 @@ class ACE_ADDON(Medical_Treatment) {
         // The number of doses over maxDose where there is a chance to overdose.
         // Example with maxDose = 4 and maxDoseDeviation = 2: Dose 4: Safe | Dose 5 and 6: Possible overdose | Dose 7: Guaranteed overdose
         maxDoseDeviation = 2;
+        // The dose of the medication, to allow for different dose amounts of the same medication
+        dose = 1;
         // Function to execute upon overdose. Arguments passed to call back are 0: unit <OBJECT>, 1: medicationClassName <STRING>
         onOverDose = "";
         // The viscosity of a fluid is a measure of its resistance to gradual deformation by shear stress or tensile stress. For liquids, it corresponds to the informal concept of "thickness". This value will increase/decrease the viscoty of the blood with the percentage given. Where 100 = max. Using the minus will decrease viscosity
@@ -25,7 +27,9 @@ class ACE_ADDON(Medical_Treatment) {
         // Max amount of pain the medication can remove
         maxRelief = 0;
         // Reduction of damage from wounds
-        opioidRelief = 1;
+        opioidRelief = 0;
+        // How strong should opioid visuals be
+        opioidEffect = 0;
 
         class Epinephrine {
             painReduce = 0;
@@ -64,7 +68,7 @@ class ACE_ADDON(Medical_Treatment) {
             maxDoseDeviation = 4;
             incompatibleMedication[] = {};
             viscosityChange = -10;
-            opioidRelief = 1.2;
+            opioidRelief = 0.1;
         };
         class Carbonate {
             painReduce = 0;
@@ -156,7 +160,8 @@ class ACE_ADDON(Medical_Treatment) {
             incompatibleMedication[] = {};
             viscosityChange = -10;
             onOverDose = "";
-            opioidRelief = 1.5;
+            opioidRelief = 0.2;
+            opioidEffect = 0.18;
         };
         class Ketamine {
             painReduce = 0.8;
@@ -170,6 +175,7 @@ class ACE_ADDON(Medical_Treatment) {
             incompatibleMedication[] = {};
             viscosityChange = 10;
             onOverDose = "";
+            opioidEffect = 0.17;
         };
         class Nalbuphine {
             painReduce = 0.6;
@@ -183,7 +189,7 @@ class ACE_ADDON(Medical_Treatment) {
             incompatibleMedication[] = {};
             viscosityChange = -5;
             onOverDose = "";
-            opioidRelief = 1.2;
+            opioidRelief = 0.1;
         };
         class CWMP {
             painReduce = 0.2;
@@ -196,6 +202,18 @@ class ACE_ADDON(Medical_Treatment) {
             maxDoseDeviation = 4;
             incompatibleMedication[] = {};
             viscosityChange = -5;
+            onOverDose = "";
+            maxRelief = 0.5;
+        };
+        class PainKillers {
+            painReduce = 0.35;
+            hrIncreaseLow[] = {-5, -10};
+            hrIncreaseNormal[] = {-5, -15};
+            hrIncreaseHigh[] = {-5, -17};
+            timeInSystem = 420;
+            timeTillMaxEffect = 60;
+            maxDose = 5;
+            incompatibleMedication[] = {};
             onOverDose = "";
             maxRelief = 0.5;
         };
@@ -253,7 +271,7 @@ class ACE_ADDON(Medical_Treatment) {
             hrIncreaseLow[] = {-5, -10};
             hrIncreaseNormal[] = {-15, -20};
             hrIncreaseHigh[] = {-20, -30};
-            timeInSystem = 45;
+            timeInSystem = 60;
             timeTillMaxEffect = 5;
             maxDose = 10;
             incompatibleMedication[] = {};
@@ -296,6 +314,7 @@ class ACE_ADDON(Medical_Treatment) {
             incompatibleMedication[] = {};
             viscosityChange = 5;
             onOverDose = "";
+            opioidEffect = 0.2;
         };
         class Caffeine {
             painReduce = 0;

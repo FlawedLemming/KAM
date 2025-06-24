@@ -27,7 +27,7 @@ if (uiNamespace getVariable [QACEGVAR(interact_menu,cursorMenuOpened), false]) e
     [ACEFUNC(medical_treatment,treatment), _this] call CBA_fnc_execNextFrame;
 };
 
-if !(_this call ACEFUNC(medical_treatment,canTreat)) exitWith {false};
+if !(call ACEFUNC(medical_treatment,canTreat)) exitWith {false};
 
 private _config = configFile >> "ace_medical_treatment_actions" >> _classname;
 
@@ -51,7 +51,7 @@ if (_treatmentTime == 0) exitWith {false};
 private _userAndItem = if (GET_NUMBER_ENTRY(_config >> "consumeItem") == 1) then {
     [_medic, _patient, getArray (_config >> "items")] call ACEFUNC(medical_treatment,useItem);
 } else {
-    [objNull, ""]; // Treatment does not require items to be consumed
+    [objNull, "", false]; // Treatment does not require items to be consumed
 };
 
 // Patient Animation Added from Old Ace
@@ -97,7 +97,7 @@ if (_medic isNotEqualTo player || {!_isInZeus}) then {
     };
 
     // Determine the animation length
-    private _animDuration = ACEGVAR(medical_treatment,animDurations) getVariable _medicAnim;
+    private _animDuration = ACEGVAR(medical_treatment,animDurations) get toLowerANSI _medicAnim;
     if (isNil "_animDuration") then {
         WARNING_2("animation [%1] for [%2] has no duration defined",_medicAnim,_classname);
         _animDuration = 10;

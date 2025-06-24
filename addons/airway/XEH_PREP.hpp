@@ -1,4 +1,5 @@
 PREP(checkAirway);
+PREP(checkMask);
 PREP(checkRecovery);
 PREP(fullHealLocal);
 PREP(gui_updateBodyImage);

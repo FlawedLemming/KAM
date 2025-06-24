@@ -1,5 +1,5 @@
 #define COMPONENT chemical
-#define COMPONENT_BEAUTIFIED KAT - Chemical
+#define COMPONENT_BEAUTIFIED Chemical
 #include "\x\kat\addons\main\script_mod.hpp"
 #include "\x\kat\addons\gui\gui_defines.hpp"
 
@@ -25,3 +25,4 @@
 #define X_PART(num) (W_PART(num) + (safeZoneX + (safeZoneW - SIZEX) / 2))
 #define Y_PART(num) (H_PART(num) + (safeZoneY + (safeZoneH - SIZEY) / 2))
 
+#define GAS_MANAGER_PFH_DELAY 1
